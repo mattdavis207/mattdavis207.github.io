@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
 
 export function LensTransition() {
   const reduceMotion = useReducedMotion();

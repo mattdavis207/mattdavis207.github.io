@@ -203,23 +203,17 @@ export function MagneticField() {
       pointer.pressed = false;
     }
 
-    function preventContextMenu(event: MouseEvent) {
-      event.preventDefault();
-    }
-
     window.addEventListener("pointermove", updatePointer);
+    window.addEventListener("pointerdown", handlePointerDown);
     window.addEventListener("pointerup", handlePointerUp);
-    canvas.addEventListener("pointerdown", handlePointerDown);
-    canvas.addEventListener("contextmenu", preventContextMenu);
     resize();
     animationFrame = window.requestAnimationFrame(render);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("pointermove", updatePointer);
+      window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointerup", handlePointerUp);
-      canvas.removeEventListener("pointerdown", handlePointerDown);
-      canvas.removeEventListener("contextmenu", preventContextMenu);
     };
   }, []);
 

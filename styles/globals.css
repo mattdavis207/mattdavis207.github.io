@@ -1,4 +1,13 @@
 @import "tailwindcss";
+@import '@fontsource/orbitron';
+
+@font-face {
+  font-family: "Yuji Syuku";
+  src: url("/fonts/yuji-syuku-latin.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
 
 :root {
   --field-background: #050505;
@@ -34,12 +43,207 @@ main,
   background: var(--field-background);
 }
 
+.magnetic-field {
+  pointer-events: none;
+}
+
 .magnetic-field__canvas {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
-  touch-action: none;
+  pointer-events: none;
+}
+
+.binary-sparks {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  width: 100vw;
+  height: 100svh;
+  place-items: center;
+  pointer-events: none;
+}
+
+.binary-sparks__stage {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  max-width: 92vw;
+  padding: 0.7rem 1rem;
+  place-items: center;
+  isolation: isolate;
+  transform-origin: top left;
+  will-change: left, top, transform;
+}
+
+.binary-sparks__field {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  mask-image: radial-gradient(ellipse at center, #000 45%, transparent 100%);
+}
+
+.binary-sparks__digit {
+  position: absolute;
+  color: rgb(96, 165, 250);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  line-height: 1;
+  text-shadow:
+    0 0 8px #286eff,
+    0 0 16px rgba(40, 110, 255, 0.65);
+  will-change: left, top, opacity, transform;
+}
+
+.binary-sparks__flash {
+  position: absolute;
+  z-index: 2;
+  width: 42%;
+  height: 65%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(225, 241, 255, 0.98) 0%,
+    rgba(79, 148, 255, 0.76) 28%,
+    rgba(40, 110, 255, 0.18) 62%,
+    transparent 78%
+  );
+  filter: blur(9px);
+  pointer-events: none;
+}
+
+.binary-sparks__name {
+  z-index: 3;
+  margin: 0;
+  color: #f6f9ff;
+  font-family: "Orbitron", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-size: clamp(2.7rem, 9.5vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: opacity, filter, transform;
+  pointer-events: auto;
+}
+
+.traveler {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  pointer-events: none;
+}
+
+.traveler__figure,
+.traveler__message {
+  grid-area: 1 / 1;
+}
+
+.traveler__figure {
+  position: relative;
+  align-self: end;
+  width: min(72vw, 27rem, 48svh);
+  transform-origin: bottom center;
+  will-change: opacity, filter, transform, clip-path;
+}
+
+.traveler__image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  mask-image: radial-gradient(
+    ellipse 66% 58% at 50% 48%,
+    #000 56%,
+    rgba(0, 0, 0, 0.92) 70%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  user-select: none;
+}
+
+.traveler__arrival-ring {
+  position: absolute;
+  z-index: 2;
+  right: 3%;
+  bottom: 1.5%;
+  left: 3%;
+  height: 5%;
+  border: 1px solid rgba(160, 206, 255, 0.8);
+  border-radius: 50%;
+  background: rgba(40, 110, 255, 0.12);
+  box-shadow:
+    0 0 12px rgba(96, 165, 250, 0.8),
+    0 0 42px rgba(40, 110, 255, 0.5),
+    inset 0 0 12px rgba(195, 225, 255, 0.45);
+}
+
+.traveler__message {
+  position: relative;
+  align-self: start;
+  width: min(88vw, 30rem);
+  margin-top: clamp(7.5rem, 15vh, 10rem);
+  padding: 1rem 1.2rem 1.1rem;
+  border: 1px solid rgba(117, 177, 255, 0.38);
+  border-radius: 0.65rem;
+  background:
+    linear-gradient(135deg, rgba(25, 52, 94, 0.76), rgba(5, 12, 27, 0.9)),
+    rgba(5, 10, 22, 0.82);
+  color: #f4f8ff;
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.48),
+    0 0 30px rgba(40, 110, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  text-align: left;
+  will-change: opacity, filter, transform;
+  pointer-events: auto;
+}
+
+.traveler__message::after {
+  position: absolute;
+  bottom: -0.45rem;
+  left: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-right: 1px solid rgba(117, 177, 255, 0.38);
+  border-bottom: 1px solid rgba(117, 177, 255, 0.38);
+  background: #081328;
+  content: "";
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.traveler__message-label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgba(130, 186, 255, 0.82);
+  font-family: Orbitron, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.traveler__message p {
+  margin: 0;
+  font-family: "Orbitron", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  line-height: 1.2;
+}
+
+.traveler__message-hint {
+  display: block;
+  margin-top: 0.6rem;
+  color: rgba(220, 232, 250, 0.62);
+  font-family: Orbitron, Helvetica, sans-serif;
+  font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+  letter-spacing: 0.035em;
+  line-height: 1.45;
 }
 
 .opening-transition {
@@ -67,5 +271,25 @@ main,
 @media (prefers-reduced-motion: reduce) {
   .magnetic-field__canvas {
     cursor: default;
+  }
+
+  .binary-sparks__name {
+    filter: none;
+  }
+
+  .traveler__figure,
+  .traveler__message {
+    filter: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .traveler__figure {
+    width: min(76vw, 22rem, 45svh);
+  }
+
+  .traveler__message {
+    margin-top: 18vh;
+    padding: 0.85rem 1rem 0.95rem;
   }
 }
