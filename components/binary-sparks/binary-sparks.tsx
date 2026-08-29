@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 type Digit = {
@@ -15,9 +15,12 @@ type Digit = {
     delay: number;
 }
 
+type PhaseType = "Scatter" | "Converge" | "flash" | "Reveal" | "Rest"
+
 export function BinarySparks() {
 
     const [digits, setDigits] = useState<Digit[]>([]);
+    const [phase, setPhase] = useState<PhaseType>("Scatter");
 
     useEffect(() => {
         setDigits(
@@ -39,34 +42,50 @@ export function BinarySparks() {
 
     return (
         // bg-[#020712]
-        <div className="relative h-72 w-72 overflow-hidden"> 
+        <div className="flex relative h-72 w-72 overflow-hidden items-center justify-center"> 
             {digits.map((digit) => (
                 <motion.span
                 key={digit.id}
                 className="absolute font-mono text-blue-400"
                 style={{
-                    left: `${digit.x}%`,
-                    top: `${digit.y}%`,
                     fontSize: digit.size,
                     textShadow: "0 0 8px #286eff",
                 }}
-                animate={{
-                    x: [0, digit.driftX * 0.3, digit.driftX],
-                    y: [20, digit.driftY * 0.4, digit.driftY],
-                    opacity: [0, 0.9, 0.15, 1, 0],
-                    scale: [0.7, 1, 0.85],
-                }}
-                transition={{
-                    duration: digit.duration,
-                    delay: digit.delay,
-                    repeat: Infinity,
-                    repeatDelay: Math.random(),
-                    ease: "easeOut",
-                }}
+                animate={phase === "Scatter" ? {
+                        left: `${digit.x}%`,
+                        top: `${digit.y}%`,
+                        x: [0, digit.driftX * 0.3, digit.driftX],
+                        y: [20, digit.driftY * 0.4, digit.driftY],
+                        opacity: [0, 0.9, 0.15, 1, 0],
+                        scale: [0.7, 1, 0.85],
+                    } : {
+                        left: "50%",
+                        top: "50%",
+                        x: 0,
+                        y: 0,
+                        opacity: 1,
+                        scale: 0.5,
+                    }
+                }
+                transition={phase === "Scatter" ? {
+                        duration: digit.duration,
+                        delay: digit.delay,
+                        repeat: Infinity,
+                        repeatDelay: Math.random(),
+                        ease: "easeOut",
+                    } : {
+                        duration: 0.8,
+                        delay: digit.delay * 0.1,
+                        ease: "easeIn",
+                    }
+                }
                 >
-                {digit.value}
+                    {digit.value}
                 </motion.span>
             ))}
+            <button onClick= {() => setPhase("Converge")} className="text-white">
+                Button
+            </button>
         </div>
 
         
