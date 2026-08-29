@@ -3,8 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-import Traveler from "@/components/traveler/traveler";
-
 type Digit = {
   id: number;
   value: "0" | "1";
@@ -54,7 +52,11 @@ function createDigits(): Digit[] {
   }));
 }
 
-export function BinarySparks() {
+type BinarySparksProps = {
+  onIntroComplete?: () => void;
+};
+
+export function BinarySparks({ onIntroComplete }: BinarySparksProps) {
   const reduceMotion = useReducedMotion();
   const [digits, setDigits] = useState<Digit[]>([]);
   const [phase, setPhase] = useState<Phase>("scatter");
@@ -87,6 +89,12 @@ export function BinarySparks() {
 
     return () => timers.forEach(window.clearTimeout);
   }, [reduceMotion]);
+
+  useEffect(() => {
+    if (phase === "welcome") {
+      onIntroComplete?.();
+    }
+  }, [onIntroComplete, phase]);
 
   const isSettled = phase === "settle" || phase === "welcome";
   const showDigits =
@@ -277,8 +285,6 @@ export function BinarySparks() {
           Matthew Davis
         </motion.h1>
       </motion.div>
-
-      <Traveler visible={phase === "welcome"} reduceMotion={!!reduceMotion} />
     </section>
   );
 }

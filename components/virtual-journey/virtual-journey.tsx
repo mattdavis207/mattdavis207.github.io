@@ -2,32 +2,28 @@
 
 import {
   motion,
+  useReducedMotion,
   useScroll,
   useTransform,
 } from "framer-motion";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { About } from "@/components/about/about";
 import { BinarySparks } from "@/components/binary-sparks/binary-sparks";
-
-const scenes = [
-  {
-    id: "welcome",
-    label: "Welcome",
-    content: <BinarySparks />,
-  },
-  {
-    id: "about",
-    label: "About",
-    content: <About />,
-  },
-];
+import Traveler from "@/components/traveler/traveler";
 
 const SCROLL_DISTANCE_PER_SCENE = 125;
 
 export function VirtualJourney() {
   const sectionRef = useRef<HTMLElement>(null);
-  const sceneCount = scenes.length;
+  const reduceMotion = useReducedMotion();
+  const [introComplete, setIntroComplete] = useState(false);
+
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true);
+  }, []);
+
+  const sceneCount = 2;
   const horizontalDistance = (sceneCount - 1) * 100;
   const journeyHeight =
     100 + (sceneCount - 1) * SCROLL_DISTANCE_PER_SCENE;
@@ -42,6 +38,20 @@ export function VirtualJourney() {
     [0, 1],
     ["0vw", `-${horizontalDistance}vw`],
   );
+
+  const scenes = [
+    {
+      id: "welcome",
+      label: "Welcome",
+      content: <BinarySparks onIntroComplete={handleIntroComplete} />,
+    },
+    {
+      id: "about",
+      label: "About",
+      content: <About scrollProgress={scrollYProgress} />,
+    },
+  ];
+
   return (
     <section
       ref={sectionRef}
@@ -57,20 +67,28 @@ export function VirtualJourney() {
             width: `${sceneCount * 100}vw`,
           }}
         >
-          {scenes.map((scene, index) => (
+          {scenes.map((scene) => (
             <section
               key={scene.id}
               className="virtual-journey__scene"
               aria-label={`${scene.label} scene`}
               data-scene={scene.id}
             >
-              <span className="virtual-journey__scene-number" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
               {scene.content}
             </section>
           ))}
         </motion.div>
+
+        <div
+          className="virtual-journey__traveler-overlay"
+          aria-label="The Traveler journey animation"
+        >
+          <Traveler
+            visible={introComplete}
+            reduceMotion={!!reduceMotion}
+            scrollProgress={scrollYProgress}
+          />
+        </div>
 
         <div className="virtual-journey__progress" aria-hidden="true">
           <motion.div
