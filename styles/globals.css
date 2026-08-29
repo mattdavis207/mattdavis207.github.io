@@ -24,18 +24,28 @@
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   margin: 0;
-  overflow: hidden;
+}
+
+html {
+  overflow-x: clip;
 }
 
 body {
+  overflow-x: clip;
   background: var(--field-background);
 }
 
-main,
+main {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+}
+
 .magnetic-field {
   position: fixed;
+  z-index: 0;
   inset: 0;
   width: 100vw;
   height: 100svh;
@@ -55,14 +65,127 @@ main,
 }
 
 .binary-sparks {
-  position: fixed;
+  position: absolute;
   z-index: 20;
   inset: 0;
   display: grid;
-  width: 100vw;
-  height: 100svh;
+  width: 100%;
+  height: 100%;
   place-items: center;
   pointer-events: none;
+}
+
+.virtual-journey {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.virtual-journey__viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.virtual-journey__track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+.virtual-journey__scene {
+  position: relative;
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.virtual-journey__scene-number {
+  position: absolute;
+  z-index: 40;
+  top: clamp(1rem, 2.5vw, 2rem);
+  right: clamp(1rem, 2.5vw, 2rem);
+  color: rgba(150, 190, 245, 0.34);
+  font-family: Orbitron, ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+}
+
+.virtual-journey__progress {
+  position: absolute;
+  z-index: 50;
+  right: clamp(1rem, 3vw, 3rem);
+  bottom: clamp(0.8rem, 2vw, 1.5rem);
+  left: clamp(1rem, 3vw, 3rem);
+  height: 1px;
+  overflow: hidden;
+  background: rgba(130, 170, 230, 0.16);
+  pointer-events: none;
+}
+
+.virtual-journey__progress-fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #286eff, rgba(145, 198, 255, 0.95));
+  box-shadow: 0 0 12px rgba(40, 110, 255, 0.72);
+  transform-origin: left center;
+}
+
+.about-scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  padding: clamp(1.5rem, 7vw, 7rem);
+  place-items: center;
+}
+
+.about-scene::before {
+  position: absolute;
+  width: min(76vw, 46rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(70, 130, 225, 0.12);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 110, 255, 0.08), transparent 68%);
+  content: "";
+}
+
+.about-scene__content {
+  position: relative;
+  z-index: 1;
+  width: min(82vw, 54rem);
+}
+
+.about-scene__eyebrow {
+  display: block;
+  margin-bottom: 0.85rem;
+  color: rgba(115, 170, 245, 0.66);
+  font-family: Orbitron, ui-monospace, monospace;
+  font-size: clamp(0.62rem, 1vw, 0.78rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.about-scene h2 {
+  margin: 0;
+  color: #f4f8ff;
+  font-family: Orbitron, sans-serif;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  text-shadow: 0 0 28px rgba(40, 110, 255, 0.22);
+}
+
+.about-scene__rule {
+  width: min(100%, 34rem);
+  height: 1px;
+  margin-top: 1.5rem;
+  background: linear-gradient(90deg, rgba(90, 155, 255, 0.8), transparent);
 }
 
 .binary-sparks__stage {
@@ -280,6 +403,31 @@ main,
   .traveler__figure,
   .traveler__message {
     filter: none;
+  }
+
+  .virtual-journey {
+    height: auto !important;
+  }
+
+  .virtual-journey__viewport {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+
+  .virtual-journey__track {
+    display: block;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .virtual-journey__scene {
+    width: 100%;
+    min-height: 100svh;
+  }
+
+  .virtual-journey__progress {
+    display: none;
   }
 }
 
