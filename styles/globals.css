@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Yuji Syuku";
+  src: url("/fonts/yuji-syuku-latin.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --field-background: #050505;
   /* Change these RGB values to recolor the particle trails. */
@@ -14,7 +22,9 @@
   /* --field-color: 170, 80, 255; */
 
   /* white */
-  /* --field-color: 255, 255, 255; */ 
+  /* --field-color: 255, 255, 255; */
+
+  --lens-opacity: 0.76;
 }
 
 * {
@@ -43,12 +53,328 @@ main,
   background: var(--field-background);
 }
 
+.magnetic-field {
+  z-index: 0;
+}
+
 .magnetic-field__canvas {
   display: block;
   width: 100%;
   height: 100%;
   cursor: crosshair;
   touch-action: none;
+}
+
+.refraction-lens-anchor {
+  position: fixed;
+  z-index: 20;
+  top: 49%;
+  left: 50%;
+  width: clamp(20rem, 48vw, 42rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.refraction-lens-anchor::before {
+  position: absolute;
+  z-index: -1;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(5, 5, 5, 0.94) 0%,
+    rgba(5, 5, 5, 0.76) 44%,
+    rgba(5, 5, 5, 0) 76%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.refraction-lens {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: opacity, filter, transform;
+}
+
+.refraction-lens__aperture {
+  position: absolute;
+  z-index: 1;
+  top: 42.6%;
+  left: 49.8%;
+  width: 59.5%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--field-background);
+  box-shadow: inset 0 0 2rem rgba(0, 0, 0, 0.92);
+  transform: translate(-50%, -50%);
+}
+
+.refraction-lens__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.refraction-lens__glass {
+  position: absolute;
+  z-index: 2;
+  top: 42.6%;
+  left: 49.8%;
+  width: 59.5%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(188, 220, 255, 0.2);
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), transparent 34%),
+    radial-gradient(circle at 58% 58%, transparent 50%, rgba(80, 140, 220, 0.08));
+  box-shadow:
+    inset 0 0 2.5rem rgba(120, 180, 255, 0.08),
+    0 0 2rem rgba(80, 140, 255, 0.08);
+  transform: translate(-50%, -50%);
+}
+
+.refraction-lens__reticle {
+  position: absolute;
+  z-index: 3;
+  top: 42.6%;
+  left: 49.8%;
+  width: 59.5%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.34;
+  transform: translate(-50%, -50%);
+}
+
+.refraction-lens__reticle::before,
+.refraction-lens__reticle::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rgba(210, 230, 255, 0.38);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.refraction-lens__reticle::before {
+  width: 24%;
+  height: 1px;
+}
+
+.refraction-lens__reticle::after {
+  width: 1px;
+  height: 24%;
+}
+
+.refraction-lens__reticle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.38rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(235, 245, 255, 0.82);
+  border-radius: 50%;
+  box-shadow: 0 0 1rem rgba(90, 150, 255, 0.55);
+  transform: translate(-50%, -50%);
+}
+
+.refraction-lens__frame {
+  z-index: 4;
+  object-fit: contain;
+  filter: saturate(0.76) brightness(0.84) contrast(1.04);
+  opacity: var(--lens-opacity);
+}
+
+.identity-center {
+  position: absolute;
+  z-index: 7;
+  top: -7%;
+  left: -8%;
+  width: 72%;
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.identity-mark {
+  margin: 0;
+  font-family: "Yuji Syuku", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-size: clamp(3rem, 6.4vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.72;
+}
+
+.identity-mark span {
+  display: block;
+}
+
+.identity-preview {
+  min-height: 2.25rem;
+  margin-top: 1.35rem;
+  margin-left: 0.25rem;
+}
+
+.identity-preview p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.55rem, 0.7vw, 0.68rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+}
+
+.section-navigation {
+  position: fixed;
+  z-index: 25;
+  inset: 0;
+  pointer-events: none;
+}
+
+.section-navigation__item {
+  --icon-fill: #102448;
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.58rem, 0.7vw, 0.7rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.section-navigation__symbol {
+  position: relative;
+  display: grid;
+  z-index: 1;
+  width: clamp(4.5rem, 6.5vw, 6.25rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  place-items: center;
+  color: #11131a;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+  transition:
+    border-color 400ms ease,
+    box-shadow 400ms ease,
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-navigation__symbol::before {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--icon-fill, rgb(var(--field-color)));
+  content: "";
+  transition: top 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-navigation__symbol svg {
+  position: relative;
+  z-index: 2;
+  width: 48%;
+  height: 48%;
+  color: currentColor;
+  transform-style: preserve-3d;
+  transition:
+    color 500ms ease,
+    transform 500ms ease;
+}
+
+.section-navigation__label {
+  position: relative;
+  padding-bottom: 0.3rem;
+}
+
+.section-navigation__label::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0.2);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.section-navigation__item:is(:hover, :focus-visible) {
+  color: #fff;
+  outline: none;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.section-navigation__item:is(:hover, :focus-visible) .section-navigation__symbol {
+  border-color: #fff;
+  box-shadow: 0 0 2.25rem color-mix(in srgb, var(--icon-fill) 45%, transparent);
+  transform: translateY(-0.2rem);
+}
+
+.section-navigation__item:is(:hover, :focus-visible)
+  .section-navigation__symbol::before {
+  top: 0;
+}
+
+.section-navigation__item:is(:hover, :focus-visible)
+  .section-navigation__symbol svg {
+  color: #fff;
+  transform: rotateY(360deg);
+}
+
+.section-navigation__item:is(:hover, :focus-visible)
+  .section-navigation__label::after {
+  transform: scaleX(1);
+}
+
+.section-navigation__item:nth-child(1) {
+  top: 36%;
+  left: 15%;
+}
+
+.section-navigation__item:nth-child(2) {
+  top: 30%;
+  left: 82%;
+}
+
+.section-navigation__item:nth-child(3) {
+  top: 78%;
+  left: 20%;
+}
+
+.section-navigation__item:nth-child(4) {
+  top: 65%;
+  left: 85%;
+}
+
+.section-navigation__item:nth-child(5) {
+  top: 86%;
+  left: 55%;
 }
 
 .opening-transition {
@@ -76,5 +402,57 @@ main,
 @media (prefers-reduced-motion: reduce) {
   .magnetic-field__canvas {
     cursor: default;
+  }
+}
+
+@media (max-width: 640px) {
+  .refraction-lens-anchor {
+    top: 47%;
+    width: min(94vw, 32rem);
+  }
+
+  .identity-center {
+    top: -5%;
+    left: -1%;
+    width: 74%;
+  }
+
+  .identity-mark {
+    font-size: clamp(2.6rem, 14vw, 4.2rem);
+  }
+
+  .identity-preview {
+    display: none;
+  }
+
+  .section-navigation {
+    top: auto;
+    right: auto;
+    bottom: 1rem;
+    left: 50%;
+    display: flex;
+    width: min(94vw, 30rem);
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+    transform: translateX(-50%);
+  }
+
+  .section-navigation__item,
+  .section-navigation__item:nth-child(n) {
+    position: static;
+    min-height: 2rem;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.55rem;
+    transform: none;
+  }
+
+  .section-navigation__item:is(:hover, :focus-visible) {
+    transform: scale(1.04);
+  }
+
+  .section-navigation__symbol {
+    width: 4rem;
   }
 }

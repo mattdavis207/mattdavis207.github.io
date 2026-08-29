@@ -9,6 +9,11 @@ export function LensTransition() {
 
   if (reduceMotion || finished) return null;
 
+  function finishTransition() {
+    window.dispatchEvent(new Event("opening-transition-complete"));
+    setFinished(true);
+  }
+
   return (
     <motion.div
       aria-hidden="true"
@@ -16,7 +21,7 @@ export function LensTransition() {
       initial={{ opacity: 1 }}
       animate={{ opacity: [1, 1, 0] }}
       transition={{ duration: 2.65, times: [0, 0.9, 1], ease: "linear" }}
-      onAnimationComplete={() => setFinished(true)}
+      onAnimationComplete={finishTransition}
     >
       <motion.div
         className="opening-transition__dot"
