@@ -18,10 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="overflow-x-clip">
+      <body className="bg-[var(--field-background)] font-sans">
         <LensTransition />
-        <main>{children}</main>
+        <main className="relative min-h-svh">{children}</main>
       </body>
     </html>
   );

@@ -218,8 +218,8 @@ export function MagneticField() {
   }, []);
 
   return (
-    <section className="magnetic-field" aria-label="Interactive magnetic field">
-      <canvas ref={canvasRef} className="magnetic-field__canvas" />
-    </section>
+    <div className="pointer-events-none fixed inset-0 z-0 h-svh w-full overflow-hidden bg-[var(--field-background)]">
+      <canvas ref={canvasRef} className="block size-full" />
+    </div>
   );
 }
