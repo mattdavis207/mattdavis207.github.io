@@ -10,7 +10,8 @@ import { MagneticField } from "@/components/magnetic-field/magnetic-field";
 
 import { ArrowLeft, ArrowRight, ArrowDown } from 'lucide-react';
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa6";
+import { FaRegFilePdf } from "react-icons/fa"
+
 
 const ANIMATED_ME = "/images/animated_me.png";
 const ANIMATED_ME_HANDS_DOWN = "/images/animated_me_hands_down.png";
@@ -111,21 +112,31 @@ export default function Home() {
                     <div className="mt-4 space-y-4">
                       <ArrowDown />
                       
-                      <LinkCard
-                        href="https://github.com/mattdavis207"
-                        icon={<FaGithub size={24}/>}
-                        title="Github"
-                        description=""
-                        newTab={true}
-                      />
+                      <div className="flex gap-3 overflow-x-auto py-3">
+                        <LinkCard
+                          href="https://github.com/mattdavis207"
+                          icon={<FaGithub size={24}/>}
+                          title="Github"
+                          description=""
+                          newTab={true}
+                        />
 
-                      <LinkCard
-                        href="https://www.linkedin.com/in/matthew-davis237/"
-                        icon={<FaLinkedin size={24}/>}
-                        title="Linkedin"
-                        description=""
-                        newTab={true}
-                      />
+                        <LinkCard
+                          href="https://www.linkedin.com/in/matthew-davis237/"
+                          icon={<FaLinkedin size={24}/>}
+                          title="Linkedin"
+                          description=""
+                          newTab={true}
+                        />
+
+                        <LinkCard
+                          href="/resume/Matthew_Davis_Resume.pdf"
+                          icon={<FaRegFilePdf size={24}/>}
+                          title="Resume"
+                          description=""
+                          newTab={true}
+                        />
+                      </div>
                     </div>
                   )}
                 </motion.div>

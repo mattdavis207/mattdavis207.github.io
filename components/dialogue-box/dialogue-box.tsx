@@ -9,7 +9,7 @@ type DialogueBoxProps = {
 
 export function DialogueBox({ title, subtitle, children, footer }: DialogueBoxProps) {
   return (
-    <div className="relative w-full overflow-hidden border border-sky-500/20 bg-slate-950 p-6 font-mono text-slate-300">
+    <div className="relative w-full min-w-0 overflow-hidden border border-sky-500/20 bg-slate-950 p-6 font-mono text-slate-300">
       {/* Faint grid behind the content. */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#0284c7_1px,transparent_1px),linear-gradient(to_bottom,#0284c7_1px,transparent_1px)] bg-[size:16px_16px]" />
 
