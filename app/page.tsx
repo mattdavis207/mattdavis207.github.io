@@ -162,6 +162,7 @@ export default function Home() {
             />
           </div>
 
+          <div className="w-full min-w-0 flex-1">
           <DialogueBox
             title="Matthew Davis"
             subtitle={field.title}
@@ -280,6 +281,24 @@ export default function Home() {
               </AnimatePresence>
             </div>
           </DialogueBox>
+          <nav aria-label="Portfolio sections" className="grid grid-cols-5 divide-x divide-sky-500/20 border border-t-0 border-sky-500/20 bg-slate-950 font-mono">
+            {fields.map((section, index) => (
+              <button
+                key={section.title}
+                type="button"
+                aria-current={fieldIndex === index ? "page" : undefined}
+                onClick={() => setFieldIndex(index)}
+                className={`min-h-14 min-w-0 cursor-pointer px-1 py-4 text-sm [overflow-wrap:anywhere] transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky-300 motion-reduce:transition-none sm:px-2 sm:text-base ${
+                  fieldIndex === index
+                    ? "bg-sky-950 font-bold text-sky-300 shadow-[inset_0_-2px_0_var(--color-sky-400)]"
+                    : "text-slate-400 hover:bg-sky-950 hover:text-sky-300"
+                }`}
+              >
+                {section.title}
+              </button>
+            ))}
+          </nav>
+          </div>
         </section>
       </div>
     </>
