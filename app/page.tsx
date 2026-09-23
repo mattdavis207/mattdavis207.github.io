@@ -6,10 +6,13 @@ import { useEffect, useState } from "react";
 
 import { DialogueBox, DialogueButton } from "@/components/dialogue-box/dialogue-box";
 import { LinkCard } from "@/components/link-card/link-card";
+import { ExperienceCard } from "@/components/experience-card/experience-card";
+import { ProjectCard } from "@/components/project-card/project-card";
 import { MagneticField } from "@/components/magnetic-field/magnetic-field";
 
 import { ArrowLeft, ArrowRight, ArrowDown } from 'lucide-react';
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { LuMail } from "react-icons/lu";
 import { FaRegFilePdf } from "react-icons/fa"
 
 
@@ -17,27 +20,71 @@ const ANIMATED_ME = "/images/animated_me.png";
 const ANIMATED_ME_HANDS_DOWN = "/images/animated_me_hands_down.png";
 
 // Edit the dialogue and add more fields here. The button follows this order.
-const FIELDS = [
+const fields = [
   { title: "Welcome", dialogue: "Hi, I’m Matthew. Welcome to my technical portfolio. To start off, you can find some important links below" },
-  { title: "About", dialogue: "This is where I’ll tell you a little about myself." },
-  { title: "Experience", dialogue: "Here, I’ll walk you through my experience." },
-  { title: "Projects", dialogue: "Next, I’ll share a few things I’ve built." },
+  { title: "About", dialogue: `I'm currently in my final year at the University of Pittsburgh, studying Computer Science with a minor in Music. \n
+    I've completed an IT internship and spent two summers as a Software Engineering Intern at Vertex, where I've worked with cloud infrastructure 
+    and helped build enterprise-grade applications with .NET and Spring Boot. \n\n I'm interested in a pretty broad range of software- from 
+    chrome extensions, automations, and mobile development to AI engineering, NLP, backend APIs, and cloud technologies. I like exploring different areas of computer science and finding new things to build.` },
+  { title: "Experience", dialogue: "" },
+  { title: "Projects", dialogue: "Next, here's a few things I’ve built." },
   { title: "Contact", dialogue: "Thanks for stopping by. This is where we can connect." },
 ];
 
-function Dialogue({ text, reducedMotion }: { text: string; reducedMotion: boolean }) {
+const experiences = [
+  {
+    title: "Software Development Intern II",
+    company: "Vertex Inc",
+    dates: "May 2026 – Aug 2026",
+    location: "King of Prussia, PA | Remote",
+    description:
+      "I used GitHub Copilot and Claude to build reusable workflows for modernizing a large Spring Boot Oracle Cloud connector, including a skill for migrating SOAP APIs to REST. I also worked on a shared file share client library, CI/CD, and a caching service for tax jurisdiction data.",
+  },
+  {
+    title: "Software Development Intern",
+    company: "Vertex Inc",
+    dates: "May 2025 – Aug 2025",
+    location: "King of Prussia, PA | Remote",
+    description:
+      "I worked on an Agile Scrum team building backend APIs for a VAT Compliance Metrics Dashboard, including role-based access control, submission rates, workflow status metrics, and filtering. I also worked on CI/CD and cloud infrastructure with AWS, Terraform, and Route 53, along with database migrations and UI fixes.",
+  },
+  {
+    title: "IT Intern",
+    company: "Bethlehem Area School District",
+    dates: "Jun 2024 – Aug 2024",
+    location: "Bethlehem, PA",
+    description:
+     "I helped deploy and reimage over 1,200 devices across 22 schools and diagnosed and repaired over 300 devices. I also worked with networking, databases, wireless infrastructure, and IT support.",
+  },
+];
+
+const projects = [
+  {
+    title: "Personality Space Explorer",
+    imageSrc: "project_images/personality_space_explorer.png",
+    description: "This is a personality space explorer on the web that is meant for discovering patterns and similarities of various personalities based on 50k+ records of celebrity personality data.",
+    href : "https://github.com/mattdavis207/personality-space-explorer",
+    linkText : "Project Link",
+    newTab : true
+  }
+]
+
+function Dialogue({ text, reducedMotion, fieldIndex }: { text: string; reducedMotion: boolean; fieldIndex: number }) {
   const [visibleCharacters, setVisibleCharacters] = useState(0);
 
   useEffect(() => {
     if (reducedMotion) return;
+
+    const delay = fieldIndex === 1 ? 10 : 30;
+
     const timer = window.setInterval(() => {
       setVisibleCharacters((count) => {
         if (count + 1 >= text.length) window.clearInterval(timer);
         return Math.min(count + 1, text.length);
       });
-    }, 30);
+    }, delay);
     return () => window.clearInterval(timer);
-  }, [text, reducedMotion]);
+  }, [text, reducedMotion, fieldIndex]);
 
   return (
     <p className="text-lg leading-relaxed text-gray-300">
@@ -55,8 +102,8 @@ export default function Home() {
     setReducedMotion(Boolean(motionPreference));
   }, [motionPreference]);
 
-  const field = FIELDS[fieldIndex];
-  const isLastField = fieldIndex === FIELDS.length - 1;
+  const field = fields[fieldIndex];
+  const isLastField = fieldIndex === fields.length - 1;
 
   return (
     <>
@@ -64,8 +111,8 @@ export default function Home() {
       <MagneticField />
 
       {/* Overlay Content */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center p-6 text-white">
-        <section className="flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row">
+      <div className="relative z-10 flex min-h-screen items-start justify-center p-6 text-white lg:pt-[20vh]">
+        <section className="flex w-full max-w-6xl flex-col items-center gap-8 lg:flex-row lg:items-start">
           <div className="relative h-128 w-64 shrink-0 overflow-hidden rounded-lg">
             <Image
               src={fieldIndex === 0 ? ANIMATED_ME : ANIMATED_ME_HANDS_DOWN}
@@ -90,9 +137,9 @@ export default function Home() {
                   <ArrowLeft size={10}/> Back
                 </DialogueButton>
                 <DialogueButton
-                  onClick={() => setFieldIndex((index) => (index + 1) % FIELDS.length)}
+                  onClick={() => setFieldIndex((index) => (index + 1) % fields.length)}
                 >
-                  {isLastField ? "Start again" : `Next: ${FIELDS[fieldIndex + 1].title}`} <ArrowRight size={10}/>
+                  {isLastField ? "Start again" : `Next: ${fields[fieldIndex + 1].title}`} <ArrowRight size={10}/>
                 </DialogueButton>
               </>
             }
@@ -106,13 +153,12 @@ export default function Home() {
                   exit={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : -12 }}
                   transition={{ duration: reducedMotion ? 0 : 0.22 }}
                 >
-                  <Dialogue text={field.dialogue} reducedMotion={reducedMotion} />
-                  {/* Add section content here, e.g. fieldIndex === 3 for project links. */}
+                  <Dialogue text={field.dialogue} reducedMotion={reducedMotion} fieldIndex={fieldIndex} />
                   {fieldIndex === 0 && (
                     <div className="mt-4 space-y-4">
                       <ArrowDown />
                       
-                      <div className="flex gap-3 overflow-x-auto py-3">
+                      <div className="flex flex-wrap gap-3 py-3">
                         <LinkCard
                           href="https://github.com/mattdavis207"
                           icon={<FaGithub size={24}/>}
@@ -136,7 +182,42 @@ export default function Home() {
                           description=""
                           newTab={true}
                         />
+                        <LinkCard
+                          href="mailto:mattdavis2313@gmail.com"
+                          icon={< LuMail size={24}/>}
+                          newTab={true}
+                          title="Email"
+                        />
                       </div>
+                    </div>
+                  )}
+                  {fieldIndex === 2 && (
+                    <div className="mt-4 space-y-8">
+                      {experiences.map((experience, index) => (
+                          <ExperienceCard
+                            key={index}
+                            title={experience.title}
+                            company={experience.company}
+                            description={experience.description}
+                            dates={experience.dates}
+                            location={experience.location}
+                          />
+                      ))}
+                    </div>
+                  )}
+                  {fieldIndex === 3 && (
+                    <div className="mt-4 space-y-8">
+                      {projects.map((project, index) => (
+                        <ProjectCard
+                          key={index}
+                          title={project.title}
+                          imageSrc={project.imageSrc}
+                          description={project.description}
+                          href={project.href}
+                          linkText={project.linkText}
+                          newTab={true}
+                        />
+                      ))}
                     </div>
                   )}
                 </motion.div>

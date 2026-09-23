@@ -21,9 +21,9 @@ export function DialogueBox({ title, subtitle, children, footer }: DialogueBoxPr
       </div>
 
       <div className="relative">
-        <h2 className="text-lg font-bold text-sky-300">{title}</h2>
+        {title && <h2 className="text-lg font-bold text-sky-300">{title}</h2>}
         {subtitle && <p className="mt-1 text-xs uppercase tracking-widest text-sky-500">{subtitle}</p>}
-        <div className="mt-6 space-y-4 text-base leading-relaxed">{children}</div>
+        <div className="mt-6 space-y-4 text-base leading-relaxed whitespace-pre-line">{children}</div>
         {footer && <div className="mt-6 flex flex-wrap justify-between gap-3 border-t border-sky-900 pt-4">{footer}</div>}
       </div>
     </div>

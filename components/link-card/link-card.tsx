@@ -5,14 +5,16 @@ type LinkCardProps = {
   href: string;
   imageSrc?: string;
   icon?: ReactNode;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   newTab?: boolean;
 };
 
 export function LinkCard({ href, imageSrc, icon, title, description, newTab = false }: LinkCardProps) {
+  const hasText = Boolean(title?.trim() || description?.trim());
+
   return (
-    <div className="w-40 shrink-0 [perspective:1000px]">
+    <div className={`${hasText ? "w-40" : "w-fit"} shrink-0 [perspective:1000px]`}>
       <a
         href={href}
         target={newTab ? "_blank" : undefined}
@@ -28,10 +30,10 @@ export function LinkCard({ href, imageSrc, icon, title, description, newTab = fa
               <Image src={imageSrc} alt="" width={24} height={24} unoptimized className="h-6 w-6 object-contain" />
             ) : icon}
           </div>
-          <div className="min-w-0 space-y-1 [transform:translateZ(5px)]">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-sky-300">{title}</h3>
+          {hasText ? <div className="min-w-0 space-y-1 [transform:translateZ(5px)]">
+            {title && <h3 className="text-xs font-bold uppercase tracking-wider text-sky-300">{title}</h3>}
             {description && <p className="text-xs leading-relaxed text-sky-400/80 group-hover:text-sky-300">{description}</p>}
-          </div>
+          </div>: null}
         </div>
       </a>
     </div>
