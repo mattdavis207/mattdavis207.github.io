@@ -214,7 +214,7 @@ export default function Home() {
                         />
 
                         <LinkCard
-                          href="/resume/Matthew_Davis_Resume.pdf"
+                          href="/resume/Matthew_Davis_Resume.pdf?v=c5a187c"
                           icon={<FaRegFilePdf size={24}/>}
                           title="Resume"
                           description=""
