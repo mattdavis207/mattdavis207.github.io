@@ -28,7 +28,7 @@ const fields = [
     chrome extensions, automations, and mobile development to AI engineering, NLP, backend APIs, and cloud technologies. I like exploring different areas of computer science and finding new things to build.` },
   { title: "Experience", dialogue: "" },
   { title: "Projects", dialogue: "Next, here's a few things I’ve built." },
-  { title: "Contact", dialogue: "Thanks for stopping by. This is where we can connect." },
+  { title: "Contact", dialogue: "That’s a bit about me and what I’ve been working on. If you want to talk about a project, an opportunity, or something interesting you’re building, feel free to reach out." },
 ];
 
 const experiences = [
@@ -60,12 +60,44 @@ const experiences = [
 
 const projects = [
   {
+    title: "Wordscope Browser Extension",
+    imageSrc: "project_images/ListingSS_1.jpg",
+    description: "Wordscope is a lightweight, on-page lookup tool that helps the user grasp unfamiliar words without breaking flow. When selecting text on a webpage, you can open a clean bubble with definitions, synonyms/antonyms, pronunciations, examples, and optional AI context right where you’re reading.",
+    href: "https://github.com/mattdavis207/wordscope",
+    linkText: "Project Link",
+    newTab: true
+  },
+  {
     title: "Personality Space Explorer",
     imageSrc: "project_images/personality_space_explorer.png",
     description: "This is a personality space explorer on the web that is meant for discovering patterns and similarities of various personalities based on 50k+ records of celebrity personality data.",
     href : "https://github.com/mattdavis207/personality-space-explorer",
     linkText : "Project Link",
     newTab : true
+  },
+  {
+    title: "Cozynest RAG Pipeline",
+    imageSrc: "project_images/admin_ui.png",
+    description: "CozyNest RAG Pipeline is a backend-focused e-commerce customer support assistant. It lets an admin upload store documents, indexes those documents into a Supabase/Postgres vector database, and uses retrieved context to answer customer questions with cited sources.",
+    href: "https://github.com/mattdavis207/cozynest_rag_pipeline",
+    linkText: "Project Link",
+    newTab: true
+  },
+  {
+    title: "Mindmapper",
+    imageSrc: "project_images/mindmapper_ss.png",
+    description: "Mindmapper is an intuitive Python application designed to aid brainstorming, studying, and knowledge mapping. By creating dynamic tree diagrams, this tool enables users to connect and organize ideas visually, making it ideal for conceptualizing and exploring complex topics.",
+    href: "https://github.com/mattdavis207/mindmapper",
+    linkText: "Project Link",
+    newTab: true
+  },
+  {
+    title: "Trading Analysis Automation",
+    imageSrc: "project_images/n8n_automation_ss.png",
+    description: "Automated forex analysis pipeline that retrieves TradingView market data to identify Triple M and engulfing candle setups across historical price ranges. Built with Python, FastAPI, and n8n to analyze price action, generate annotated candlestick visualizations, and automatically log structured results to Notion.",
+    href: "https://github.com/mattdavis207/knowledge_extractor_api/tree/main",
+    linkText: "Project Link",
+    newTab: true
   }
 ]
 
@@ -75,7 +107,7 @@ function Dialogue({ text, reducedMotion, fieldIndex }: { text: string; reducedMo
   useEffect(() => {
     if (reducedMotion) return;
 
-    const delay = fieldIndex === 1 ? 10 : 30;
+    const delay = fieldIndex === 1 ? 10 : fieldIndex=== 4 ? 20: 30;
 
     const timer = window.setInterval(() => {
       setVisibleCharacters((count) => {
@@ -218,6 +250,24 @@ export default function Home() {
                           newTab={true}
                         />
                       ))}
+                    </div>
+                  )}
+                  {fieldIndex === 4 && (
+                    <div className="flex flex-wrap gap-3 py-3">
+                      <LinkCard
+                        href="https://www.linkedin.com/in/matthew-davis237/"
+                        icon={<FaLinkedin size={24}/>}
+                        title="Linkedin"
+                        description=""
+                        newTab={true}
+                      />
+
+                      <LinkCard
+                        href="mailto:mattdavis2313@gmail.com"
+                        icon={< LuMail size={24}/>}
+                        newTab={true}
+                        title="Email"
+                      />
                     </div>
                   )}
                 </motion.div>
