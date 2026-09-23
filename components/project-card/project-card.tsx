@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaChevronRight } from "react-icons/fa"
 
 type ProjectCardProps = {
   title: string;
@@ -13,6 +14,7 @@ type ProjectCardProps = {
   imageAlt?: string;
   linkText?: string;
   newTab?: boolean;
+  isExpanded?: boolean;
 };
 
 export function ProjectCard({
@@ -23,6 +25,7 @@ export function ProjectCard({
   imageAlt = title,
   linkText = "View project",
   newTab = false,
+  isExpanded = false
 }: ProjectCardProps) {
 
   const [open, setOpen] = useState(false);
@@ -30,11 +33,18 @@ export function ProjectCard({
   const reducedMotion = useReducedMotion();
   const duration = reducedMotion ? 0 : 0.3;
 
+  useEffect(() => {
+    if (isExpanded) {
+      setExpanded(true); 
+      setOpen(true);
+    }
+  }, [])
+
   return (
     <motion.article
       layout
       transition={{ duration }}
-      className={`${expanded ? "w-full" : "w-fit"} flex max-w-full overflow-hidden border border-sky-400/40 bg-slate-950 font-mono whitespace-normal`}
+      className={`w-full flex max-w-full overflow-hidden border border-sky-400/40 bg-slate-950 font-mono whitespace-normal`}
     >
       {/* The same button rotates to become the bookmark tab */}
       <button
@@ -45,13 +55,17 @@ export function ProjectCard({
           setOpen(!open);
         }}
         title={title}
-        className={`${expanded ? "w-12 shrink-0 border-r border-sky-400/40" : "min-h-12 px-4 py-3"} relative cursor-pointer bg-sky-950 text-sm font-bold text-sky-300 hover:bg-sky-900 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky-300`}
+        className={`${expanded ? "w-12 shrink-0 border-r border-sky-400/40" : "w-full min-h-12 px-4 py-3"} relative cursor-pointer bg-sky-950 text-sm font-bold text-sky-300 hover:bg-sky-900 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sky-300`}
       >
-        <span
-          className={`${expanded ? "absolute top-1/2 left-1/2 w-60 -translate-x-1/2 -translate-y-1/2 -rotate-90" : "block max-w-full"} truncate transition-transform duration-300 motion-reduce:transition-none`}
-        >
-          {title}
-        </span>
+        <div className="flex flex-wrap gap-3 py-3">
+          {!expanded ? <FaChevronRight size={16}/> : null}
+          <span
+            className={`${expanded ? "absolute top-1/2 left-1/2 w-60 -translate-x-1/2 -translate-y-1/2 -rotate-90" : "block max-w-full"} truncate transition-transform duration-300 motion-reduce:transition-none`}
+          >
+            {title}
+          </span>
+        </div>
+        
       </button>
 
       {/* Fade out at full width, then shrink the empty card. */}

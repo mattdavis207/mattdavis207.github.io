@@ -40,9 +40,9 @@ export function MagneticField() {
     const pointer: Pointer = { x: 0, y: 0, pressed: false };
     const canvasStyles = getComputedStyle(canvas);
     const fieldColor =
-      canvasStyles.getPropertyValue("--field-color").trim() || "255, 82, 48";
+      canvasStyles.getPropertyValue("--field-color").trim() || "#0ea5e9";
     const fieldBackground =
-      canvasStyles.getPropertyValue("--field-background").trim() || "#050505";
+      canvasStyles.getPropertyValue("--field-background").trim() || "#020617";
 
     let width = 0;
     let height = 0;
@@ -180,9 +180,11 @@ export function MagneticField() {
       }
 
       context.globalCompositeOperation = "lighter";
-      context.strokeStyle = `rgba(${fieldColor}, 0.22)`;
+      context.strokeStyle = fieldColor;
+      context.globalAlpha = 0.22;
       context.lineWidth = 0.75;
       context.stroke();
+      context.globalAlpha = 1;
 
       animationFrame = window.requestAnimationFrame(render);
     }

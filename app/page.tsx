@@ -65,7 +65,8 @@ const projects = [
     description: "Wordscope is a lightweight, on-page lookup tool that helps the user grasp unfamiliar words without breaking flow. When selecting text on a webpage, you can open a clean bubble with definitions, synonyms/antonyms, pronunciations, examples, and optional AI context right where you’re reading.",
     href: "https://github.com/mattdavis207/wordscope",
     linkText: "Project Link",
-    newTab: true
+    newTab: true,
+    isExpanded: true
   },
   {
     title: "Personality Space Explorer",
@@ -73,7 +74,8 @@ const projects = [
     description: "This is a personality space explorer on the web that is meant for discovering patterns and similarities of various personalities based on 50k+ records of celebrity personality data.",
     href : "https://github.com/mattdavis207/personality-space-explorer",
     linkText : "Project Link",
-    newTab : true
+    newTab : true,
+    isExpanded: false
   },
   {
     title: "Cozynest RAG Pipeline",
@@ -81,7 +83,8 @@ const projects = [
     description: "CozyNest RAG Pipeline is a backend-focused e-commerce customer support assistant. It lets an admin upload store documents, indexes those documents into a Supabase/Postgres vector database, and uses retrieved context to answer customer questions with cited sources.",
     href: "https://github.com/mattdavis207/cozynest_rag_pipeline",
     linkText: "Project Link",
-    newTab: true
+    newTab: true,
+    isExpanded: false
   },
   {
     title: "Mindmapper",
@@ -89,15 +92,17 @@ const projects = [
     description: "Mindmapper is an intuitive Python application designed to aid brainstorming, studying, and knowledge mapping. By creating dynamic tree diagrams, this tool enables users to connect and organize ideas visually, making it ideal for conceptualizing and exploring complex topics.",
     href: "https://github.com/mattdavis207/mindmapper",
     linkText: "Project Link",
-    newTab: true
+    newTab: true,
+    isExpanded: false
   },
   {
     title: "Trading Analysis Automation",
     imageSrc: "project_images/n8n_automation_ss.png",
     description: "Automated forex analysis pipeline that retrieves TradingView market data to identify Triple M and engulfing candle setups across historical price ranges. Built with Python, FastAPI, and n8n to analyze price action, generate annotated candlestick visualizations, and automatically log structured results to Notion.",
-    href: "https://github.com/mattdavis207/knowledge_extractor_api/tree/main",
+    href: "https://github.com/mattdavis207/knowledge_extractor_api",
     linkText: "Project Link",
-    newTab: true
+    newTab: true,
+    isExpanded: false
   }
 ]
 
@@ -248,6 +253,7 @@ export default function Home() {
                           href={project.href}
                           linkText={project.linkText}
                           newTab={true}
+                          isExpanded={project.isExpanded}
                         />
                       ))}
                     </div>

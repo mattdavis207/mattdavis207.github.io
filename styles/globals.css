@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  --field-background: #050505;
-  --field-color: 40, 110, 255;
+  --field-background: var(--color-slate-950, #020617);
+  --field-color: var(--color-sky-500, #0ea5e9);
 }
